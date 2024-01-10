@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         EditText edNamaDepan = (EditText) findViewById(R.id.edNamaDepan);
         EditText edNamaBelakang = (EditText) findViewById(R.id.edNamaBelakang);
+        EditText edUsia = (EditText) findViewById(R.id.edUsia);
         Button btnSimpan = (Button) findViewById(R.id.btnSimpan);
 
         ArrayList<String> daftar_nama = new ArrayList<>();
@@ -31,19 +32,44 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String isian_nama_depan = edNamaDepan.getText().toString();
                 String isian_nama_belakang = edNamaBelakang.getText().toString();
+                String isian_usia = edUsia.getText().toString();
 
                 if(isian_nama_depan.isEmpty()){
                     Toast.makeText(getApplicationContext(), "Isian masih kosong", Toast.LENGTH_SHORT).show();
                 }else{
+                    int usia = Integer.parseInt(isian_usia);
+                    String kategori_usia = getKategoriUsia(usia);
+
                     String nama_lengkap = isian_nama_depan.concat(" ").concat(isian_nama_belakang);
+
                     daftar_nama.clear();
-                    daftar_nama.add(nama_lengkap);
+
+                    for (int i = 1; 1 <= usia; i++){
+                        daftar_nama.add(i + "." + nama_lengkap + "-Status: " + kategori_usia);
+                    }
+
                     edNamaDepan.setText("");
                     edNamaBelakang.setText("");
+                    edUsia.setText("");
+
                     intent_list.putStringArrayListExtra("daftar_nama", daftar_nama);
+
                     startActivity(intent_list);
+
                 }
             }
         });
+    }
+
+    private String getKategoriUsia(int usia) {
+        if (usia < 10) {
+            return "Anak";
+        } else if (usia < 20) {
+            return "Remaja";
+        } else if (usia < 40) {
+            return "Dewasa";
+        }else {
+            return "Tua";
+        }
     }
 }
